@@ -18,6 +18,16 @@
 
 <body>
 
+   <script>
+
+function incrementValue(){    
+
+var s = document.getElementById('demo')
+
+var value = parseInt(s.textContent, 10);    value = isNaN(value) ? 0 : value;    value.pow(10);    document.getElementById('demo').innerHTML = value;}
+
+</script>     
+        
   <div class="mytabs">
 
     <input type="radio" id="tabfree" name="mytabs" checked="checked">
@@ -25,7 +35,7 @@
     <label for="tabfree">Free</label>
 
     <div class="tab">
-        <button type="button" id="test">test<button>
+        <button type="button" id="demo">10<button>
     </div>
 
     <input type="radio" id="tabsilver" name="mytabs">
