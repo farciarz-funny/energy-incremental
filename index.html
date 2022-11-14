@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    
+
+    <script src="ExpantaNum.js"></script>
+
+        
+
+        <script src="test.js"></script>    
+
+    <title>Tabs</title>
+
+</head>
+
+<body id:"back>
+
+        
+
+  <div class="mytabs">
+
+    <input type="radio" id="tabfree" name="mytabs" checked="checked">
+
+    <label for="tabfree">Free</label>
+
+    <div class="tab" id="ke">
+
+        <div id="demo0">
+
+                     <p id:"demo1">you have 0 kinetic energy</p>
+
+                     <p id:"demo2">you get 1 kinetic energy every click</p>
+
+                            </div>
+
+    </div>
+
+    <input type="radio" id="tabsilver" name="mytabs">
+
+    <label for="tabsilver">Silver</label>
+
+    <div class="tab">
+
+      <h2>Silver</h2>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+    </div>
+
+    <input type="radio" id="tabgold" name="mytabs">
+
+    <label for="tabgold">Gold</label>
+
+    <div class="tab">
+
+      <h2>Gold</h2>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+
+<style>
+
+  body {
+
+    background: #000000;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+      margin: 0px;
+
+                    text-shadow: 0px 0px 12px white;
+
+                    font-weight: normal;
+
+}
+
+.mytabs {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    max-width: 100vw;
+
+    margin: 50px auto;
+
+    padding: 25px;
+
+    
+
+    position: top;
+
+    
+
+    
+
+}
+
+.mytabs input[type="radio"] {
+
+    display: none;
+
+}
+
+.mytabs label {
+
+    padding-top: 3vh;
+
+    padding-bottom: 3vh;
+
+    padding-left: 11%;
+
+    padding-right: 11%;
+
+border: 8px solid #ffffff;
+
+    background: #000000;
+
+color: #ffffff;
+
+    
+
+    font-size: 35px
+
+}
+
+.mytabs .tab {
+
+    width: 100%;
+
+    padding: 20px;
+
+    background: #000000;
+
+    order: 1;
+
+border: 4px solid #ffffff;
+
+    display: none;
+
+    
+
+}
+
+.mytabs .tab h2 {
+
+    font-size: 3em;
+
+}
+
+.mytabs input[type='radio']:checked + label + .tab {
+
+    display: block;
+
+}
+
+.mytabs input[type="radio"]:checked + label {
+
+    background: #0f0f0f;
+
+}
+
+    #demo0 {
+
+    position: absolute;
+
+        top: 35vh;
+
+        right: 34vw;
+
+        width: 35vw;
+
+        height: 20vh;
+
+        border: 10px solid #ffffff;
+
+          background-color: #000000;
+
+                         
+
+                     
+
+        }
+
+                          #demo1 {
+
+                          position: absolute;
+
+                          text-align: center;
+
+                          color: #ffffff;
+
+                          }
+
+                          
+
+                          #demo2 {
+
+                          position: absolute;
+
+                          text-align: center;
+
+                          color: #ffffff;
+
+                          }
+
+#ke {
+
+    padding-top: 70vh;
+
+    }
+
+        
+
+</style>
+
+
