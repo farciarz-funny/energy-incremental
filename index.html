@@ -28,7 +28,10 @@
     <label for="tabfree">Free</label>
 
     <div class="tab" id="ke">
-        <button type="button" id="demo" onclick="te()">10</button>
+        <div id="demo0">
+                     <p id:"demo1">you have 0 kinetic energy</p>
+                     <p id:"demo2">you get 1 kinetic energy every click</p>
+                            </div>
     </div>
 
     <input type="radio" id="tabsilver" name="mytabs">
@@ -108,7 +111,7 @@
 border: 8px solid #ffffff;
     background: #000000;
 color: #ffffff;
-    font-weight: bold;
+    
 
     font-size: 35px
 }
@@ -145,7 +148,7 @@ border: 4px solid #ffffff;
     background: #0f0f0f;
 
 }
-    #demo {
+    #demo0 {
     position: absolute;
         top: 35vh;
         right: 34vw;
@@ -153,9 +156,24 @@ border: 4px solid #ffffff;
         height: 20vh;
         border: 10px solid #ffffff;
           background-color: #000000;
-                          color: #ffffff;
+                         
                      
         }
+                          #demo1 {
+                          position: absolute;
+                          text-align: center;
+                          color: #ffffff;
+                          }
+                          
+
+                          #demo2 {
+                          position: absolute;
+
+                          text-align: center;
+
+                          color: #ffffff;
+
+                          }
 #ke {
     padding-top: 70vh;
     }
