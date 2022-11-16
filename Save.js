@@ -1,4 +1,4 @@
-var player
+var player = {}
 function E(x){return new ExpantaNum(x)};
 
 function ex(x){
@@ -22,7 +22,7 @@ function wipe() {
     }
     function save(){
 
-    if (localStorage.getItem("incrementalMassSave") == '') wipe()
+    if (localStorage.getItem("Save") == '') wipe()
 
     localStorage.setItem("Save",btoa(JSON.stringify(player)))
 
