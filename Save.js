@@ -17,7 +17,7 @@ function ex(x){
 function wipe() {
 
     player = {
-    KE: E(0);
+    KE: E(0)
     }
     }
     function save(){
