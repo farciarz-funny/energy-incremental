@@ -1,4 +1,4 @@
-var player = {}
+
 function E(x){return new ExpantaNum(x)};
 
 function ex(x){
