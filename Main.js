@@ -1,32 +1,24 @@
-var player
 // 1 = shoving quantity 2 = shoving per click or price
-  
-  
-  
-  
-  
-  
+var powerlvl = E(player.P)
+var velocitylvl = E(player.V)
+var masslvl = E(player.M)
+var k = E(player.KE)
+var m = document.getElementById('mass1') // your mass
+var mm = document.getElementById('mass2') // your KE per mass
+var s = document.getElementById('demo1')
+var ss = document.getElementById('demo2')
+var v = document.getElementById('vel1')
+var vv = document.getElementById('vel2')
+var p = document.getElementById('pow1')
+var pp = document.getElementById('pow2')
+var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).add(1)
+
 function te() {
-  var powerlvl = E(player.P)
-  var s = document.getElementById('demo1')
-  var masslvl = E(player.M)
-  var velocitylvl = E(player.V)
-  var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).add(1)
-  
-  var k = E(player.KE)
 player.KE = E(k).add(formula)
 s.innerHTML = "you have " + k.floor() + " kinetic energy"
 
 }
 function mass() {
-  var powerlvl = E(player.P)
-  var velocitylvl = E(player.V)
-  var k = E(player.KE)
-  var masslvl = E(player.M)
-  var m = document.getElementById('mass1') // your mass
-  var mm = document.getElementById('mass2') // your KE per mass
-  var s = document.getElementById('demo1')
-  var ss = document.getElementById('demo2')
   canbuy = ExpantaNum.affordGeometricSeries(k,25,1.5,masslvl)
   masscost = ExpantaNum.sumGeometricSeries(canbuy,25,1.5,masslvl)
   var massformula = k.sub(masscost).floor()
@@ -43,14 +35,6 @@ function mass() {
   }
 }
 function vel() {
-  var powerlvl = E(player.P)
-  var velocitylvl = E(player.V)
-  var masslvl = E(player.M)
-  var k = E(player.KE)
-  var v = document.getElementById('vel1')
-  var vv = document.getElementById('vel2')
-    var s = document.getElementById('demo1')
-  var ss = document.getElementById('demo2')
  var buyV = ExpantaNum.affordGeometricSeries(k,150,5,velocitylvl)
  var costV = ExpantaNum.sumGeometricSeries(buyV,150,5,velocitylvl)
   var massformula = k.sub(costV).floor()
@@ -67,14 +51,6 @@ function vel() {
  }
 }
 function pow(){
-    var powerlvl = E(player.P)
-    var velocitylvl = E(player.P)
-  var masslvl = E(player.M)
-  var k = E(player.KE)
-  var p = document.getElementById('pow1')
-  var pp = document.getElementById('pow2')
-    var s = document.getElementById('demo1')
-  var ss = document.getElementById('demo2')
  var buyP = ExpantaNum.affordGeometricSeries(k,35000,15,powerlvl)
  var costP = ExpantaNum.sumGeometricSeries(buyP,35000,15,powerlvl)
   var massformula = k.sub(costP).floor()
