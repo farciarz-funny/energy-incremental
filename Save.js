@@ -1,6 +1,6 @@
-
+var player = {}
 function E(x){return new ExpantaNum(x)};
-
+export {player, E}
 function ex(x){
 
     let nx = new E(0);
