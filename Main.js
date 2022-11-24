@@ -1,4 +1,5 @@
 // 1 = shoving quantity 2 = shoving per click or price
+import {player, E} from './Save.js'
 var powerlvl = E(player.P)
 var velocitylvl = E(player.V)
 var masslvl = E(player.M)
