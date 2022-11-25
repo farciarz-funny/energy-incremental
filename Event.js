@@ -10,6 +10,7 @@ te()
 var body = document.body
 window.addEventListener('load', () => {
     loadGame()
+    console.log("loodaaeed")
 })
 wi.addEventListener('click', () => {
     wipe()
