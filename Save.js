@@ -86,5 +86,6 @@ function loadGame() {
 
     setInterval(save,1000)
 
+console.log("game loaded")
 }
 export {player, E, loadGame, importy, wipe, exporty}
