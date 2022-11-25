@@ -67,7 +67,4 @@ function pow(){
   pp.innerHTML = "Cost: " + E(35000).mul(E(15).pow(velocitylvl)).floor() + " KE";
  }
 }
-function tet() {
-  te()
-}
-export {tet, mass, vel, pow}
+export {te, mass, vel, pow}
