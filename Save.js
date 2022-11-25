@@ -70,20 +70,6 @@ function importy() {
     }
 
 }
-function exporty_copy() {
-    let str = btoa(JSON.stringify(player))
-    if (!(typeof(str) === 'string') && typeof(str) === 'null') {
-        alert("Error Exporting, because it got NaNed")
-        return
-    }
-        let copyText = document.getElementById('copy')
-    copyText.value = str
-    copyText.style.visibility = "visible"
-    copyText.select();
-    document.execCommand("copy");
-    copyText.style.visibility = "hidden"
-    alert("Copied to Clipboard")
-    }
 function loadPlayer(load) {
 player.KE = ex(load.KE)
 player.M = ex(load.M)
@@ -100,4 +86,4 @@ function loadGame() {
     setInterval(save,1000)
 
 }
-export {player, E, loadGame, importy, wipe, exporty, exporty_copy}
+export {player, E, loadGame, importy, wipe, exporty}
