@@ -1,4 +1,4 @@
-import {te, mass, vel, pow} from './Main.js'
+import {tet, mass, vel, pow} from './Main.js'
 import { loadGame, wipe, importy, exporty } from './Save.js'
 var s = document.getElementById("demo0")
 var wi = document.getElementById("wipe")
