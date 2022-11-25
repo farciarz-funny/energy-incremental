@@ -24,6 +24,7 @@ function wipe() {
     if (localStorage.getItem("Save") == '') wipe()
 
     localStorage.setItem("Save",btoa(JSON.stringify(player)))
+    console.log("saved")
 
 }
 
