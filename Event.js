@@ -8,7 +8,7 @@ s.addEventListener('click', () => {
 te()
 })
 var body = document.body
-body.addEventListener('load', () => {
+window.addEventListener('load', () => {
     loadGame()
 })
 wi.addEventListener('click', () => {
@@ -19,4 +19,7 @@ im.addEventListener('click', () => {
 })
 ex.addEventListener('click', () => {
     exporty()
+})
+window.addEventListener('load', () => {
+  console.log('loaded')
 })
