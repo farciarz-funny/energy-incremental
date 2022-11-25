@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
+    <link rel="shortcut icon" href="#">
     
 
     <script src="ExpantaNum.js"></script>
@@ -23,6 +23,7 @@
 </head>
 
 <body id="back">
+  <input id="copy" style="position: absolute; top: 0; left: 0; user-select: all; visibility: hidden;">
 
         
 
@@ -77,7 +78,10 @@
 
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
 
-      <button onclick="wipe()">wipe</button>
+      <button id="wipe">wipe</button>
+      <button id="import">import</button>
+      <button id="export">export download</button>
+      <button id="exportc">export copy</button>
     </div>
 
     <input type="radio" id="tabgold" name="mytabs">
