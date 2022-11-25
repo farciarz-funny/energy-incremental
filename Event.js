@@ -8,8 +8,7 @@ s.addEventListener('click', () => {
 te()
 })
 window.addEventListener('load', () => {
-  console.log("loodaaeed")
-    loadGame()
+    te()
 })
 wi.addEventListener('click', () => {
     wipe()
