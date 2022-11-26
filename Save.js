@@ -30,7 +30,7 @@ function wipe() {
 
 function load(x){
 
-    if(typeof x == "string" & x != ''){
+    if(typeof x == "string" && x != ''){
 
         loadPlayer(JSON.parse(atob(x)))
 
