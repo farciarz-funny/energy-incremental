@@ -3,7 +3,7 @@ import {player, E} from './Save.js'
 var powerlvl = E(player.P)
 var velocitylvl = E(player.V)
 var masslvl = E(player.M)
-var k = E(player.KE)
+var k = player.KE
 var m = document.getElementById('mass1') // your mass
 var mm = document.getElementById('mass2') // your KE per mass
 var s = document.getElementById('demo1')
