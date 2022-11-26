@@ -1777,8 +1777,3 @@
     globalScope.ExpantaNum = ExpantaNum;
   }
 })(this);
-function addIE(x,y) {
-  var p = new ExpantaNum(x)
-  p.add(y)
-}
-export {addIE}
