@@ -1,4 +1,4 @@
-import {te, mass, vel, pow} from './Main.js'
+import {tee, mass, vel, pow} from './Main.js'
 import {loadGame, wipe, importy, exporty, save, load } from './Save.js'
 import {player} from './Save.js'
 var s = document.getElementById("demo0")
@@ -6,7 +6,7 @@ var wi = document.getElementById("wipe")
 var im = document.getElementById("import")
 var ex = document.getElementById("export")
 s.addEventListener('click', () => {
-te()
+tee()
 })
 window.addEventListener('load', () => {
   
