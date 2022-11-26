@@ -14,6 +14,9 @@ var p = document.getElementById('pow1')
 var pp = document.getElementById('pow2')
 var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).add(1)
 
+function tee() {
+  console.log(player,"befor")
+}
 function mass() {
   canbuy = ExpantaNum.affordGeometricSeries(k,25,1.5,masslvl)
   masscost = ExpantaNum.sumGeometricSeries(canbuy,25,1.5,masslvl)
@@ -62,4 +65,4 @@ function pow(){
   pp.innerHTML = "Cost: " + E(35000).mul(E(15).pow(velocitylvl)).floor() + " KE";
  }
 }
-export {te, mass, vel, pow}
+export {tee, mass, vel, pow}
