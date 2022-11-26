@@ -16,9 +16,10 @@ var pp = document.getElementById('pow2')
 var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).add(1)
 
 function te() {
+  console.log(player)
 player.KE = addIE(player.KE,1)
 s.innerHTML = "you have " + k + " kinetic energy"
-
+console.log(player)
 }
 function mass() {
   canbuy = ExpantaNum.affordGeometricSeries(k,25,1.5,masslvl)
