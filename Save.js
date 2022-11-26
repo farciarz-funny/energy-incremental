@@ -1,22 +1,9 @@
 var player = {}
 function E(x){return new ExpantaNum(x)};
-function ex(x){
-
-    let nx = new E(0);
-
-    nx.array = x.array;
-
-    nx.sign = x.sign;
-
-    nx.layer = x.layer;
-
-    return nx;
-
-}
 function wipe() {
 
     player = {
-    KE: E(0), M: E(0), V: E(0), P: E(0)
+    KE: "0", M: "0", V: "0", P: "0"
     }
     }
     function save(){
@@ -72,10 +59,10 @@ function importy() {
 
 }
 function loadPlayer(load) {
-player.KE = ex(load.KE)
-player.M = ex(load.M)
-player.V = ex(load.V)
-player.P = ex(load.P)
+player.KE = load.KE
+player.M = load.M
+player.V = load.V
+player.P = load.P
 }
 function loadGame() {
 
@@ -84,8 +71,8 @@ function loadGame() {
     load(localStorage.getItem("Save"))
 
 
-    setInterval(save,1000)
+    setInterval(save,60000)
 
 console.log("game loaded")
 }
-export {player, E, loadGame, importy, wipe, exporty}
+export {player, E, loadGame, importy, wipe, exporty, save, load}
