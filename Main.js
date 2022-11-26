@@ -1,5 +1,6 @@
 // 1 = shoving quantity 2 = shoving per click or price
 import {player, E} from './Save.js'
+import {addIE} from './ExpantaNum.js'
 var powerlvl = E(player.P)
 var velocitylvl = E(player.V)
 var masslvl = E(player.M)
@@ -15,8 +16,8 @@ var pp = document.getElementById('pow2')
 var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).add(1)
 
 function te() {
-player.KE = E(k).add(formula)
-s.innerHTML = "you have " + k.floor() + " kinetic energy"
+player.KE = addIE(player.KE,1)
+s.innerHTML = "you have " + k + " kinetic energy"
 
 }
 function mass() {
