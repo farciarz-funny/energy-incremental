@@ -16,9 +16,6 @@ var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).ad
 
 function te() {
   console.log(player,"before" )
-  delay(1)
-player.KE = E(k).add(1).toString()
-s.innerHTML = "you have " + E(k).floor() + " kinetic energy"
 console.log(player,"after" )
 }
 function mass() {
