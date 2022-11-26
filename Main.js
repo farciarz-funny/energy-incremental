@@ -16,7 +16,7 @@ var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).ad
 
 function tee() {
   console.log(player,"befor")
-  player.KE = E(k).add(1)
+  player.KE = E(k).add(1).toString()
 }
 function mass() {
   canbuy = ExpantaNum.affordGeometricSeries(k,25,1.5,masslvl)
