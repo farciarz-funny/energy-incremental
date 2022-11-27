@@ -1,4 +1,3 @@
-var player = {}
 var wipe = {
     KE: "0", M: "0", V: "0", P: "0"
     }
@@ -75,4 +74,4 @@ function loadGame() {
 
 console.log("game loaded")
 }
-export {player, E, loadGame, importy, wipe, exporty, save, load}
+export { E, loadGame, importy, wipe, exporty, save, load}
