@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
 })
 wi.addEventListener('click', () => {
     wipe()
-    console.log(player,"save wiped/created")
+    console.log(localStorage.getItem("Save"),"save wiped/created")
 })
 im.addEventListener('click', () => {
     importy()
@@ -27,5 +27,5 @@ document.getElementById("save").addEventListener('click', () => {
 })
 document.getElementById("load").addEventListener('click', () => {
   load(localStorage.getItem("Save"))
-  console.log(player,"loaded")
+  console.log(localStorage.getItem("Save"),"loaded")
 })
