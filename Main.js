@@ -1,5 +1,5 @@
 // 1 = shoving quantity 2 = shoving per click or price
-import {player, E} from './Save.js'
+import {E} from './Save.js'
 var save = localStorage.getItem("Save")
 var powerlvl = E(save.P)
 var velocitylvl = E(save.V)
