@@ -1,14 +1,15 @@
 var player = {}
+var wipe = {
+    KE: "0", M: "0", V: "0", P: "0"
+    }
 function E(x){return new ExpantaNum(x)};
 function wipe() {
 
-    player = {
-    KE: "0", M: "0", V: "0", P: "0"
-    }
+localStorage.setItem("Save", wipe)
     }
     function save(){
 
-    if (localStorage.getItem("Save") == '') wipe()
+    if (localStorage.getItem("Save") == null) wipe()
 
     localStorage.setItem("Save",btoa(JSON.stringify(player)))
     console.log("saved")
@@ -33,7 +34,7 @@ function exporty() {
 
     save();
 
-    let file = new Blob([btoa(JSON.stringify(player))], {type: "text/plain"})
+    let file = new Blob([btoa(JSON.stringify(localStorage.getItem("Save")))], {type: "text/plain"})
 
     window.URL = window.URL || window.webkitURL;
 
@@ -53,23 +54,22 @@ function importy() {
 
     if (loadgame != null) {
 
-        load(loadgame)
+        localStorage.setItem("Save",loadgame)
 
     }
 
 }
 function loadPlayer(load) {
-player.KE = load.KE
-player.M = load.M
-player.V = load.V
-player.P = load.P
+  var sus = localStorage.getItem("Save")
+sus.KE = load.KE
+sus.M = load.M
+sus.V = load.V
+sus.P = load.P
+localStorage.setItem("Save",sus)
 }
 function loadGame() {
 
     wipe()
-
-    load(localStorage.getItem("Save"))
-
 
     setInterval(save,60000)
 
