@@ -1,9 +1,10 @@
 // 1 = shoving quantity 2 = shoving per click or price
 import {player, E} from './Save.js'
-var powerlvl = E(player.P)
-var velocitylvl = E(player.V)
-var masslvl = E(player.M)
-var k = player.KE
+var save = localStorage.getItem("Save")
+var powerlvl = E(save.P)
+var velocitylvl = E(save.V)
+var masslvl = E(save.M)
+var k = save.KE
 var m = document.getElementById('mass1') // your mass
 var mm = document.getElementById('mass2') // your KE per mass
 var s = document.getElementById('demo1')
@@ -15,8 +16,10 @@ var pp = document.getElementById('pow2')
 var formula = masslvl.mul(velocitylvl.add(1).pow(E(2).add(powerlvl.root(2)))).add(1)
 
 function tee() {
-  console.log(player,"befor")
-  player.KE = E(k).add(1).toString()
+  console.log(save,"before")
+  save.KE = E(k).add(1).toString()
+  localStorage.setItem("Save", save)
+  console.log(save, "after")
 }
 function mass() {
   canbuy = ExpantaNum.affordGeometricSeries(k,25,1.5,masslvl)
