@@ -3,7 +3,7 @@ var sav = {
     }
 function E(z){return new ExpantaNum(z)};
 function wipe() {
-
+localStorage.removeItem("Save")
 localStorage.setItem("Save", sav)
     }
     function save(){
