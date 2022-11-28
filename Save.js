@@ -74,4 +74,4 @@ function loadGame() {
 
 console.log("game loaded")
 }
-export { wipe, E, loadGame, importy, sav, exporty, save, load}
+export { E, loadGame, importy, wipe, exporty, save, load}
