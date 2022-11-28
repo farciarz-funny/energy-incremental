@@ -1,10 +1,10 @@
-var wipe = {
+var sav = {
     KE: "0", M: "0", V: "0", P: "0"
     }
 function E(x){return new ExpantaNum(x)};
 function wipe() {
 
-localStorage.setItem("Save", wipe)
+localStorage.setItem("Save", sav)
     }
     function save(){
 
@@ -74,4 +74,4 @@ function loadGame() {
 
 console.log("game loaded")
 }
-export { E, loadGame, importy, wipe, exporty, save, load}
+export { E, loadGame, importy, sav, exporty, save, load}
