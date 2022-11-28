@@ -1,7 +1,7 @@
 var sav = {
     KE: "0", M: "0", V: "0", P: "0"
     }
-function E(x){return new ExpantaNum(x)};
+function E(z){return new ExpantaNum(z)};
 function wipe() {
 
 localStorage.setItem("Save", sav)
