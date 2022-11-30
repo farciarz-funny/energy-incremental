@@ -1,37 +1,15 @@
-var sav = {
+var Sav = {
     KE: "0", M: "0", V: "0", P: "0"
     }
-function E(z){return new ExpantaNum(z)};
+function E(x){return new ExpantaNum(x)};
 function wipe() {
 localStorage.removeItem("Save")
-localStorage.setItem("Save", sav)
+localStorage.setItem("Save", JSON.stringify(Sav))
+console.log(localStorage.getItem("Save"))
     }
-    function save(){
-
-    if (localStorage.getItem("Save") == null) wipe()
-
-    localStorage.setItem("Save",btoa(JSON.stringify(player)))
-    console.log("saved")
-
-}
-
-function load(x){
-
-    if(typeof x == "string" && x != ''){
-
-        loadPlayer(JSON.parse(atob(x)))
-
-    } else {
-
-        wipe()
-
-    }
-
-}
-
 function exporty() {
 
-    save();
+    
 
     let file = new Blob([btoa(JSON.stringify(localStorage.getItem("Save")))], {type: "text/plain"})
 
@@ -45,6 +23,7 @@ function exporty() {
 
     a.click()
 
+console.log("exported")
 }
 
 function importy() {
@@ -54,24 +33,13 @@ function importy() {
     if (loadgame != null) {
 
         localStorage.setItem("Save",loadgame)
-
+console.log("imported")
     }
 
 }
-function loadPlayer(load) {
-  var sus = localStorage.getItem("Save")
-sus.KE = load.KE
-sus.M = load.M
-sus.V = load.V
-sus.P = load.P
-localStorage.setItem("Save",sus)
-}
 function loadGame() {
-
-    wipe()
-
-    setInterval(save,60000)
-
-console.log("game loaded")
+ if(localStorage.getItem("Save") === null) {
+   wipe()
+ }
+console.log("game loaded", localStorage.getItem("Save"))
 }
-export { E, loadGame, importy, wipe, exporty, save, load}
