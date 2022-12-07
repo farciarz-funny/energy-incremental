@@ -9,85 +9,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <script src="ExpantaNum.js"></script>
 
 <script src="Save.js"></script> 
         <script src="Main.js"></script>
-     <script type="module" src="Event.js"></script>
+     <script src="V.js"></script>
      
     <title>Tabs</title>
 
 </head>
 
-<body id="back">
-
+<body onload="loadGame()">
+  <p id="alert" style='color:white'> if everything disappeared not including this text refresh your page to fix that hopefully</p>
+<div id="app">
         
-
+        
   <div class="mytabs">
 
-    <input type="radio" id="tabfree" name="mytabs" checked="checked">
+   <div class="labels">
+    <p v-on:click="fu.tab(1)" id="energy" class="label">Energy</p>
+    <p v-on:click="fu.tab(2)" id="settings" class="label">Settings</p>
+    <p v-on:click="fu.tab(3)" id="heat" class="label">Heat</p>
+        </div>
 
-    <label for="tabfree">Energy</label>
+    <div v-if="E(player.TABS).eq(1)" class="tab" id="ke">
 
-    <div class="tab" id="ke">
-
-        <div id="demo0">
+        <div v-on:click="fu.te()" id="demo0">
 <br>
-                     <p id="demo1">you have 0 kinetic energy</p>
-                     <br>
+                     <h1 id="demo1">you have {{ format(E(player.KE).floor()) }} kinetic energy</h1>
+                     <p>click this box to gain kinetic energy</p>
                  
-                     <p id="demo2">you get 1 kinetic energy every click</p>
+                     <p id="demo2">you get {{ format(fu.gainKE()) }} kinetic energy every click</p>
 
                             </div>
-                            <div id="mass0" class="UPG">
-                                <br>
-                                               <p id="mass1">you have 0 mass</p>
+                            <div v-on:click="fu.mass()" v-if="E(player.KE).gte(10) || E(player.M).gte(1)" id="mass0" class="UPG">
+                                <p>mass multiplies KE gain by itself + 1</p>
+                                               <h1 class="count" id="mass1">you have {{ player.M }} mass</h1>
                                     <br>
-                   <p id="mass2">Cost: 0 KE</p>
+                   <p id="mass2">Cost: {{ format(E(25).mul(E(1.5).pow(player.M)).floor()) }} KE</p>
            
                                                  </div>
-                             <div id="vel0" class="UPG">
-                                <br>
-                                               <p id="vel1">you have 0 velocity</p>
-                                    <br>
-                   <p id="vel2">Cost: 0 KE</p>
+                             <div v-on:click="fu.vel()" v-if="E(player.KE).gte(100) || E(player.V).gte(1)" id="vel0" class="UPG">
+                                <p>velocity miltiplies KE gain by itself to the <span style="font-weight: bold">power + 2</span></p>
+                                               <h1 class="count" id="vel1">you have {{ player.V }} <span v-if="E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)">+ {{ E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor() }}</span>  velocity</h1>
+                                    <p>Currently: x{{ format(E(player.V).add(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor()).pow(fu.power())) }}</p>
+                   <p id="vel2">Cost: {{ format(E(150).mul(E(5).pow(player.V)).floor()) }} KE</p>
            
                                                  </div>
-                                                   <div id="pow0" class="UPG">
-                                                      <br>
-                      <p id="pow1">you have 0 power</p>
-                                                               <br>
+                                                   <div v-on:click="fu.pow()" v-if="E(player.KE).gte(25000) || E(player.P).gte(1)" id="pow0" class="UPG">
+                                                      <p>power's effect is the <span style="font-weight: bold">power</span> in velocity</p>
+                      <h1 class="count" id="pow1">you have {{ player.P }} power</h1>
+                                                               <p>Currently: ^{{ format(E(fu.power()).sub(2)) }} <span v-if="E(player.P).gte(5)" style="font-weight: bold">Softcapped</span></p>
         
-                                    <p id="pow2">Cost: 0 KE</p>
+                                    <p id="pow2">Cost: {{ format(E(35000).mul(E(15).pow(player.P)).floor()) }} KE</p>
                                                                                                 
                                    </div>
+<h1 v-if="E(player.P).gte(1)" id="forceCounter">you have {{ format(E(player.F).floor()) }} force</h1>
+<div v-if="E(player.P).gte(1)" v-on:click="fu.forceGain()" id="forceReset">
+  
+<p id="force1">you will get {{ format(E(player.KE).div(1e9).pow(0.5).floor()) }} force</p>
+<p id="force1,5">your force and KE adds {{ format(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor()) }} to velocity upgrades (if you force reseted at least once it will fix if you have at least 1 force)</p>
+<p id="force2">you need at least 1e9 KE to gain force (min 5 force recomended)</p>
+</div>
 
     </div>
-
-    <input type="radio" id="tabsilver" name="mytabs">
-
-    <label for="tabsilver">Settings</label>
-
-    <div class="tab">
+    <div v-if="E(player.TABS).eq(2)" class="tab">
 
       <h2>Saving settings</h2>
-      <button id="wipe">wipe</button>
-      <button id="import">import</button>
-      <button id="export">export download</button>
+      <button v-on:click="sa.wipe()" id="wipe">wipe</button>
+      <button v-on:click="sa.importy()" id="import">import</button>
+      <button v-on:click="sa.exporty()" id="export">export download</button>
     </div>
 
-    <input type="radio" id="tabgold" name="mytabs">
-
-    <label for="tabgold">Heat</label>
-
-    <div class="tab">
+    <div v-if="E(player.TABS).eq(3)" class="tab">
 
     </div>
 
   </div>
-
+</div>
 </body>
 
 </html>
@@ -107,6 +108,7 @@
                     font-weight: normal;
 
                     overflow: auto
+                    color: white;
 
 }
 
@@ -133,31 +135,19 @@
 
 }
 
-.mytabs input[type="radio"] {
-
-    display: none;
-
-}
-
-.mytabs label {
-
-    padding-top: 13px;
-
-    padding-bottom: 13px;
-
-    padding-left: 110px;
-
-    padding-right: 110px;
-
+.label {
+    padding: 10px;
+width: auto;
 border: 3px solid #ffffff;
 
     background: #000000;
+margin: 3px;
 
 color: #ffffff;
 
-    
+    font-weight: bolder;
 
-    font-size: 35px
+    font-size: 20px
 
 }
 
@@ -172,11 +162,6 @@ color: #ffffff;
     order: 1;
 
 border: 3px solid #ffffff;
-
-    display: none;
-
-    
-
 }
 
 .mytabs .tab h2 {
@@ -185,18 +170,10 @@ border: 3px solid #ffffff;
 
 }
 
-.mytabs input[type='radio']:checked + label + .tab {
-
-    display: block;
-
+#energy {
+  color: #ffffaa;
+  border-color: #ffffaa;
 }
-
-.mytabs input[type="radio"]:checked + label {
-
-    background: #707070;
-
-}
-
 #demo0 {
 
 position: relative;
@@ -209,14 +186,13 @@ position: relative;
 
     height: 160px;
 
-    border: 10px solid #ffffff;
+    border: 10px solid #ffffaa;
 
-      background-color: #000000;
+      background-color: #333300;
 
-                     color: #ffffff;
+                     color: #ffffaa;
     text-align: center;
 
-                 
 
     }
 
@@ -225,17 +201,24 @@ position: relative;
 
                       text-align: center;
 
-                      color: #ffffff;
+                      color: #ffffaa;
                          
+                         font-size: 18px;
                       }
 
+                      .count {
+                        text-align: center;
+
                       
+                         
+                         font-size: 18px;
+                      }
 
                       #demo2 {
 
                       text-align: center;
 
-                      color: #ffffff;
+                      color: #ffffaa;
                           
                           
                       }
@@ -260,29 +243,66 @@ position: relative;
                                                 top: 70px;
                     
                     right: 10px;
+                    color: #aaaaff;
+                    border-color: #aaaaff;
+                    background-color: #000044 ;
                                               }
                                               #vel0 {
                                                 position: relative;
-                                                top: -100px;
+                                                top: -110px;
+                                                height: 170px;
                     
                     right: -317px;
+                    color: #aaffaa;
+                    border-color: #aaffaa;
+                    background-color: #004400 ;
                                               }
                                               #pow0 {
                                                 position: relative;
-                                                top: -270px;
+                                                top: -288px;
                     
                     right: -644px;
+                    
                                               }
 
 #ke {
 
-    height: 600px;
+    height: 1200px;
 
     width: 960px;
-                
+    background-color: #111100;
+    border-color: #ffffaa;
     }
 
-        
+     #forceCounter {
+       color: #ffcccc;
+       position: relative;
+       font-size: 21px;
+       left: 380px;
+       top: -250px;
+     }   
+     #forceReset {
+position: relative;
+    width: 500px;
+    height: 160px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 13px;
+    border: 10px solid #ffcccc;
+      background-color: #330000;
+                     color: #ffcccc;
+                     left: 225px;
+                     top: -250px;
+    text-align: center;
+     }
+     .labels {
+       display: flex;
+    justify-content: center;
+    content
+    flex-flow: row wrap;
+    width: 100vw;
+     }
+     
 
 </style>
 
