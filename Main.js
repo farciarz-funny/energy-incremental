@@ -142,17 +142,17 @@ localStorage.setItem("Save", JSON.stringify(player))
     switch (y) {
       case "M":
       var price = fu.forceCost(x,"M")
-        if(E(player.F).gt(price) && player.FM < 4) player.FM = player.FM + 1; player.F = E(player.F).sub(price).toString()
+        if(E(player.F).gt(price) && player.FM < 4) player.F = E(player.F).sub(price).toString(); player.FM = player.FM + 1
         localStorage.setItem("Save",JSON.stringify(player))
       break;
       case "V":
       var price = fu.forceCost(x,"V")
-        if(E(player.F).gt(price) && player.FV < 4) player.FV = player.FV + 1; player.F = E(player.F).sub(price).toString()
+        if(E(player.F).gt(price) && player.FV < 4) player.F = E(player.F).sub(price).toString(); player.FV = player.FV + 1;
         localStorage.setItem("Save",JSON.stringify(player))
       break;
       case "P":
       var price = fu.forceCost(x,"P")
-        if(E(player.F).gt(price) && player.FP < 4) player.FP = player.FP + 1; player.F = E(player.F).sub(price).toString()
+        if(E(player.F).gt(price) && player.FP < 4) player.F = E(player.F).sub(price).toString(); player.FP = player.FP + 1;
         localStorage.setItem("Save",JSON.stringify(player))
       break;
     }
