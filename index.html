@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=-1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -22,7 +22,9 @@
 </head>
 
 <body onload="loadGame()">
-  <p id="alert" style='color:white'> if everything disappeared not including this text and if buttons below don't work refresh your page to fix that hopefully</p>
+  <p id="alert" style='color:white'> if everything disappeared not including this text and if buttons below are not working refresh your page to fix that hopefully</p>
+   <span v-if="E(fu.gainKE()).gte(1e100)" style="color: #990000; text-shadow: 0px 0px 12px #550000; font-weight: bolder">   (this is a place holder) SOFTCAPPED<span v-if="E(fu.gainKE()).gte(1e200)">+</span><span v-if="E(fu.gainKE()).gte(1e300)">^2</span>   </span> 
+   
 <div id="app">
         
         
@@ -31,6 +33,7 @@
    <div class="labels">
     <p v-on:click="fu.tab(1)" id="energy" class="label">Energy</p>
     <p v-on:click="fu.tab(2)" id="settings" class="label">Settings</p>
+    <p v-on:click="fu.tab(4)" id="stats" class="label" style="color: #aaaaff; border-color: #aaaaff;">Stats/info</p>
     <p v-on:click="fu.tab(3)" id="heat" class="label">Heat</p>
         </div>
 
@@ -47,33 +50,48 @@
                             <div v-on:click="fu.mass()" v-if="E(player.KE).gte(10) || E(player.M).gte(1)" id="mass0" class="UPG">
                                 <p>mass multiplies KE gain by itself + 1</p>
                                                <h1 class="count" id="mass1">you have {{ player.M }} mass</h1>
-                                    <br>
-                   <p id="mass2">Cost: {{ format(E(25).mul(E(1.5).pow(player.M)).floor()) }} KE</p>
+                                    <p v-if="player.FM >= 3">Currently: x{{ format(E(player.M).pow(E(player.M).div(1000).add(1))) }}</p>
+                   <p id="mass2">Cost: {{ format(E(25).mul(E(fu.forceRatio(player.FM,"M")).pow(player.M)).div(fu.forceCheap(player.FP,"P")).floor()) }} KE</p>
            
                                                  </div>
                              <div v-on:click="fu.vel()" v-if="E(player.KE).gte(100) || E(player.V).gte(1)" id="vel0" class="UPG">
                                 <p>velocity miltiplies KE gain by itself to the <span style="font-weight: bold">power + 2</span></p>
                                                <h1 class="count" id="vel1">you have {{ player.V }} <span v-if="E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)">+ {{ E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor() }}</span>  velocity</h1>
-                                    <p>Currently: x{{ format(E(player.V).add(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor()).pow(fu.power())) }}</p>
-                   <p id="vel2">Cost: {{ format(E(150).mul(E(5).pow(player.V)).floor()) }} KE</p>
+                                  <p>Currently: x{{ format(fu.velocity()) }}</p>
+                   <p id="vel2">Cost: {{ format(E(150).mul(E(fu.forceRatio(player.FV,"V")).pow(player.V)).div(fu.forceCheap(player.FM,"M")).floor()) }} KE</p>
            
                                                  </div>
                                                    <div v-on:click="fu.pow()" v-if="E(player.KE).gte(25000) || E(player.P).gte(1)" id="pow0" class="UPG">
                                                       <p>power's effect is the <span style="font-weight: bold">power</span> in velocity</p>
                       <h1 class="count" id="pow1">you have {{ player.P }} power</h1>
-                                                               <p>Currently: ^{{ format(E(fu.power()).sub(2)) }} <span v-if="E(player.P).gte(5)" style="font-weight: bold">Softcapped</span></p>
-        
-                                    <p id="pow2">Cost: {{ format(E(35000).mul(E(15).pow(player.P)).floor()) }} KE</p>
+                          <p>Currently: ^{{ format(E(fu.power(false))) }} <span v-if="E(player.P).gte(5)" style="font-weight: bold">Softcapped</span></p>
+                                    <p id="pow2">Cost: {{ format(E(35000).mul(E(fu.forceRatio(player.FP,"P")).pow(player.P)).div(fu.forceCheap(player.FV,"V")).floor()) }} KE</p>
                                                                                                 
                                    </div>
 <h1 v-if="E(player.P).gte(1)" id="forceCounter">you have {{ format(E(player.F).floor()) }} force</h1>
-<div v-if="E(player.P).gte(1)" v-on:click="fu.forceGain()" id="forceReset">
+<div v-if="E(player.P).gte(1)" v-on:click="fu.forceGain()" id="forceReset" class="force">
   
 <p id="force1">you will get {{ format(E(player.KE).div(1e9).pow(0.5).floor()) }} force</p>
 <p id="force1,5">your force and KE adds {{ format(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor()) }} to velocity upgrades (if you force reseted at least once it will fix if you have at least 1 force)</p>
 <p id="force2">you need at least 1e9 KE to gain force (min 5 force recomended)</p>
 </div>
-
+<div v-if="E(player.P).gte(1)" id="forceUpgs" class="force labels">
+<div v-on:click="fu.forceBuy(player.FM,'M')" id="forceupgrade1" class="force UPG">
+  <h1 class="count">mass force upgrade </h1>
+  <p>about: {{ fu.forceAbout(player.FM,"M") }}</p>
+  <p>Cost: {{ format(fu.forceCost(player.FM,"M")) }}</p>
+</div>
+<div v-on:click="fu.forceBuy(player.FV,'V')" id="forceupgrade2" class="force UPG">
+  <h1 class="count">velocity force upgrade </h1>
+  <p>about: {{ fu.forceAbout(player.FV,"V") }}</p>
+  <p>Cost: {{ format(fu.forceCost(player.FV,"V")) }}</p>
+</div>
+<div v-on:click="fu.forceBuy(player.FP,'P')" id="forceupgrade3" class="force UPG">
+  <h1 class="count">power force upgrade </h1>
+  <p>about: {{ fu.forceAbout(player.FP,"P") }}</p>
+  <p>Cost: {{ format(fu.forceCost(player.FP,"P")) }}</p>
+</div>
+</div>
     </div>
     <div v-if="E(player.TABS).eq(2)" class="tab">
 
@@ -81,12 +99,44 @@
       <button v-on:click="sa.wipe()" id="wipe">wipe</button>
       <button v-on:click="sa.importy()" id="import">import</button>
       <button v-on:click="sa.exporty()" id="export">export download</button>
+      <h2 v-if="player.FM >= 4 || player.FV >= 4 || player.FP >= 4">autobuyer/cps test</h2>
+      <button v-on:click="fu.toggleAuto('M')" v-if="player.FM >= 4">toggle mass autobuyer</button>
+      <button v-on:click="fu.toggleAuto('V')" v-if="player.FV >= 4">toggle velocity autobuyer</button>
+      <button v-on:click="fu.toggleAuto('P')" v-if="player.FP >= 4">toggle power autobuyer</button>
+      <button v-on:click="fu.toggleAuto('KE')" v-if="player.FM >= 4">toggle kinetic energy autoclicker</button>
+      <button v-on:click="CPStest()" v-if="player.FM >= 4">cps test</button>
+      <button v-on:click="fu.interval()" v-if="player.FM >= 4">change autobuyer interval</button>
     </div>
 
     <div v-if="E(player.TABS).eq(3)" class="tab">
 
     </div>
 
+    <div v-if="E(player.TABS).eq(4)" class="tab" id="statsTab">
+      <div v-if="E(player.F).gte(1)" id="forceInfo" class="force labels">
+        <div id="forceupgradeinfo1" class="force UPG">
+          Mass force upgrades
+  <p v-if="E(player.FM).gte(1)">upgrade 1: {{ fu.forceAbout(0,"M") }}</p>
+  <p v-if="E(player.FM).gte(2)">upgrade 2: {{ fu.forceAbout(1,"M") }} <br> effect: /{{ format(fu.forceCheap(2,"M")) }}</p>
+  <p v-if="E(player.FM).gte(3)">upgrade 3: {{ fu.forceAbout(2,"M") }} <br> effect: ^{{ format(E(player.M).div(1000).add(1)) }}</p>
+  <p v-if="E(player.FM).gte(4)">upgrade 4: {{ fu.forceAbout(3,"M") }} </p>
+</div>
+<div id="forceupgradeinfo2" class="force UPG">
+  Velocity force upgrades
+  <p v-if="E(player.FV).gte(1)">upgrade 1: {{ fu.forceAbout(0,"V") }}</p>
+  <p v-if="E(player.FV).gte(2)">upgrade 2: {{ fu.forceAbout(1,"V") }} <br> effect: /{{ format(fu.forceCheap(2,"V")) }}</p>
+  <p v-if="E(player.FV).gte(3)">upgrade 3: {{ fu.forceAbout(2,"V") }} <br> effect: ^{{ format(E(player.V).add(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor().add(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor())).div(500).add(1)) }} </p>
+  <p v-if="E(player.FV).gte(4)">upgrade 4: {{ fu.forceAbout(3,"V") }} </p>
+</div>
+<div id="forceupgradeinfo3" class="force UPG">
+  Power force upgrades
+  <p v-if="E(player.FP).gte(1)">upgrade 1: {{ fu.forceAbout(0,"P") }}</p>
+  <p v-if="E(player.FP).gte(2)">upgrade 2: {{ fu.forceAbout(1,"P") }} <br> effect: /{{ format(fu.forceCheap(2,"P")) }}</p>
+  <p v-if="E(player.FP).gte(3)">upgrade 3: {{ fu.forceAbout(2,"P") }} <br> effect: x{{ format(E(player.P).div(50).add(1)) }} (but its still softcapped)</p>
+    <p v-if="E(player.FP).gte(4)">upgrade 4: {{ fu.forceAbout(3,"P") }} </p>
+</div>
+      </div>
+    </div>
   </div>
 </div>
 </body>
@@ -228,13 +278,14 @@ position: relative;
 
                             width: 300px;
                     
-                    height: 150px;
+                    height: auto;
                     
                     border: 10px solid #ffffff;
                     
                               background-color: #000000;
                     
                                              color: #ffffff;
+                                             margin: 3px;
                             text-align: center;
                     
                                               }
@@ -250,7 +301,6 @@ position: relative;
                                               #vel0 {
                                                 position: relative;
                                                 top: -110px;
-                                                height: 170px;
                     
                     right: -317px;
                     color: #aaffaa;
@@ -259,10 +309,9 @@ position: relative;
                                               }
                                               #pow0 {
                                                 position: relative;
-                                                top: -308px;
+                                                top: -288px;
                     
                     right: -644px;
-                                                  height: 170px;
                     
                                               }
 
@@ -274,6 +323,13 @@ position: relative;
     background-color: #111100;
     border-color: #ffffaa;
     }
+    #statsTab {
+      height: auto;
+
+    width: 960px;
+    background-color: #000011;
+    border-color: #aaaaff;
+    }
 
      #forceCounter {
        color: #ffcccc;
@@ -281,20 +337,34 @@ position: relative;
        font-size: 21px;
        left: 380px;
        top: -250px;
-     }   
-     #forceReset {
-position: relative;
-    width: 500px;
-    height: 160px;
-    padding-left: 5px;
+     } 
+     .force {
+           padding-left: 5px;
     padding-right: 5px;
     padding-top: 13px;
     border: 10px solid #ffcccc;
       background-color: #330000;
                      color: #ffcccc;
+     }
+     #forceReset {
+position: relative;
+    width: 500px;
+    height: 160px;
                      left: 225px;
                      top: -250px;
     text-align: center;
+     }
+     #forceUpgs {
+       width: 930px;
+       height: auto;
+       position: relative;
+       top: -200px;
+     }
+          #forceInfo {
+       width: 930px;
+       height: auto;
+       position: relative;
+       top: 0px;
      }
      .labels {
        display: flex;
