@@ -9,13 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=-1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <script src="ExpantaNum.js"></script>
-
-<script src="Save.js"></script> 
-        <script src="Main.js"></script>
-     <script src="V.js"></script>
+    
      
     <title>Tabs</title>
 
@@ -30,11 +24,11 @@
         
   <div class="mytabs">
 
-   <div class="labels">
+   <div class="labels" style="width: 100vw">
     <p v-on:click="fu.tab(1)" id="energy" class="label">Energy</p>
     <p v-on:click="fu.tab(2)" id="settings" class="label">Settings</p>
     <p v-on:click="fu.tab(4)" id="stats" class="label" style="color: #aaaaff; border-color: #aaaaff;">Stats/info</p>
-    <p v-on:click="fu.tab(3)" id="heat" class="label">Heat</p>
+    <p v-if="E(player.F).gt(1e10) || E(player.H).gte(1)" v-on:click="fu.tab(3)" id="heat" class="label" style="color: #ffbb77; border-color: #ffbb77;">Heat</p>
         </div>
 
     <div v-if="E(player.TABS).eq(1)" class="tab" id="ke">
@@ -46,32 +40,34 @@
                  
                      <p id="demo2">you get {{ format(fu.gainKE()) }} kinetic energy every click</p>
 
-                            </div>
+                            </div> <br>
+                            <div class="labels" id="KEupgs">
                             <div v-on:click="fu.mass()" v-if="E(player.KE).gte(10) || E(player.M).gte(1)" id="mass0" class="UPG">
                                 <p>mass multiplies KE gain by itself + 1</p>
-                                               <h1 class="count" id="mass1">you have {{ player.M }} mass</h1>
-                                    <p v-if="player.FM >= 3">Currently: x{{ format(E(player.M).pow(E(player.M).div(1000).add(1))) }}</p>
+                                               <h1 class="count" id="mass1">you have {{ E(player.M).mul(player.SM1).mul(player.SM2).floor() }} mass</h1>
+                                    <p v-if="player.FM >= 3">Currently: x{{ format(fu.mas()) }}</p>
                    <p id="mass2">Cost: {{ format(E(25).mul(E(fu.forceRatio(player.FM,"M")).pow(player.M)).div(fu.forceCheap(player.FP,"P")).floor()) }} KE</p>
            
                                                  </div>
                              <div v-on:click="fu.vel()" v-if="E(player.KE).gte(100) || E(player.V).gte(1)" id="vel0" class="UPG">
                                 <p>velocity miltiplies KE gain by itself to the <span style="font-weight: bold">power + 2</span></p>
-                                               <h1 class="count" id="vel1">you have {{ player.V }} <span v-if="E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)">+ {{ E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor() }}</span>  velocity</h1>
+                                               <h1 class="count" id="vel1">you have {{ E(player.V).mul(player.SV1).mul(player.SV2).floor() }} <span v-if="E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)">+ {{ E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).mul(player.SV1).mul(player.SV2).floor() }}</span>  velocity</h1>
                                   <p>Currently: x{{ format(fu.velocity()) }}</p>
                    <p id="vel2">Cost: {{ format(E(150).mul(E(fu.forceRatio(player.FV,"V")).pow(player.V)).div(fu.forceCheap(player.FM,"M")).floor()) }} KE</p>
            
                                                  </div>
                                                    <div v-on:click="fu.pow()" v-if="E(player.KE).gte(25000) || E(player.P).gte(1)" id="pow0" class="UPG">
                                                       <p>power's effect is the <span style="font-weight: bold">power</span> in velocity</p>
-                      <h1 class="count" id="pow1">you have {{ player.P }} power</h1>
+                      <h1 class="count" id="pow1">you have {{ E(player.P).mul(player.SP1).mul(player.SP2).floor() }} power</h1>
                           <p>Currently: ^{{ format(E(fu.power(false))) }} <span v-if="E(player.P).gte(5)" style="font-weight: bold">Softcapped</span></p>
                                     <p id="pow2">Cost: {{ format(E(35000).mul(E(fu.forceRatio(player.FP,"P")).pow(player.P)).div(fu.forceCheap(player.FV,"V")).floor()) }} KE</p>
                                                                                                 
                                    </div>
+                                   </div>
 <h1 v-if="E(player.P).gte(1)" id="forceCounter">you have {{ format(E(player.F).floor()) }} force</h1>
 <div v-if="E(player.P).gte(1)" v-on:click="fu.forceGain()" id="forceReset" class="force">
   
-<p id="force1">you will get {{ format(E(player.KE).div(1e9).pow(0.5).floor()) }} force</p>
+<p id="force1">you will get {{ format(E(player.KE).div(1e9).pow(0.5).mul(E(2).pow(E(player.HE).log10())).floor()) }} force</p>
 <p id="force1,5">your force and KE adds {{ format(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor()) }} to velocity upgrades (if you force reseted at least once it will fix if you have at least 1 force)</p>
 <p id="force2">you need at least 1e9 KE to gain force (min 5 force recomended)</p>
 </div>
@@ -108,7 +104,63 @@
       <button v-on:click="fu.interval()" v-if="player.FM >= 4">change autobuyer interval</button>
     </div>
 
-    <div v-if="E(player.TABS).eq(3)" class="tab">
+    <div v-if="E(player.TABS).eq(3)" class="tab" style="background-color: #221100; border-color: #ffbb77; color: #ffbb77">
+    <h1 class="count">you have {{ format(E(player.H).floor()) }} Heat which generates {{ format(E(player.H).pow(1.2).floor()) }} Heat energy every second</h1>
+    <p>you have {{ format(E(player.HE).floor()) }} Heat energy which boosts force gain by x{{ format(E(2).pow(E(player.HE).log10())) }} and boosts KE gain by x{{ format(E(1.4).pow(E(player.HE).log10())) }}</p>
+    <div v-on:click="fu.gainHeat()" class="Heat">
+      <p>click here to gain Heat</p>
+      <p>you have to get at least 1e10 force to make a Heat reset</p>
+      <p>you will get {{ format(E(player.F).div(1e10).pow(0.4).pow(fu.scaleBoost()).floor()) }} Heat afte the reset</p>
+    </div><br>
+      <div style="margin-bottom: 30px" v-if="E(player.H).gte(10000)" class="Heat labels">
+      <div class="myRange">
+        <p>double Heat energy gain</p>
+        <p>effect: {{  }}</p>
+        <p>Cost: {{ }}</p>
+      </div>
+      <div class="myRange">
+        <p>raise Heat energy gain by ^0.01 (adding)</p>
+        <p>effect: {{  }}</p>
+        <p>Cost: {{ }}</p>
+      </div>
+      <div class="myRange">
+        <p>raise Heat energy boost</p>
+        <p>effect: {{  }}</p>
+        <p>Cost: {{ }}</p>
+      </div> 
+    </div>
+    <span style="font-size: 30px; font-weight: bolder">Challenge Scales</span><br>
+    <span style="font-size: 10px">it boosts Heat gain because the challenge is hell and hell is very hot and more Challenge is more hell</span><br><br>
+    <span class="secret">but who knows what does the key value mean (not done yet)</span>
+    <div style=" margin-bottom: 30px" v-if="E(player.H).gte(1)" class="Heat labels" id="heatSliders">
+       <div class="myRange">
+       <span>Mass to Velocity, scale 1</span><br>
+       <input type="range" min="1" max="201" value="100" id="heatSlider1" > <br>
+       <span >Your Mass %{{ E(fu.heatSlider(1,1)).mul(100).floor() }}<br> Your Velocity %{{ E(fu.heatSlider(1,2)).mul(100).floor() }}</span> <br>
+       <span>requires 1000 Heat</span>
+       </div>
+       <div class="myRange">
+       <span>Velocity to Power, scale 2</span><br>
+       <input type="range" min="1" max="201" value="100" id="heatSlider2" > <br>
+       <span >Your Velocity %{{ E(fu.heatSlider(2,1)).mul(100).floor() }} <br> Your Power %{{ E(fu.heatSlider(2,2)).mul(100).floor() }}</span> <br>
+       <span>requires 10000 Heat</span>
+       </div>
+       <div class="myRange">
+       <span>Power to Mass, scale 3</span><br>
+       <input type="range" min="1" max="201" value="100" id="heatSlider3" > <br>
+       <span >Your Power %{{ E(fu.heatSlider(3,1)).mul(100).floor() }} <br> Your Mass %{{ E(fu.heatSlider(3,2)).mul(100).floor() }}</span> <br>
+       <span>requires ? Heat</span>
+       </div>
+        <div v-on:click="fu.heatScales()" class="myRange">
+        
+        <span>click here to activate the scales</span> <br>
+        <span>Mass %{{ E(player.SM1).mul(100).floor() }} Velocity %{{ E(player.SV1).mul(100).floor() }}</span> <br>
+        <span>Velocity %{{ E(player.SV2).mul(100).floor() }} Power %{{ E(player.SP1).mul(100).floor() }}</span> <br>
+        <span>Power %{{ E(player.SM2).mul(100).floor() }} Mass %{{ E(player.SP2).mul(100).floor() }}</span>
+        </div>
+    </div>
+    <h1 class="count">your challenge scales will boost Heat gain by ^{{ fu.testScale() }} after scale activation</h1>
+    <h1 class="count">your challenge scales boost Heat gain by ^{{ format(fu.scaleBoost()) }}</h1>
 
     </div>
 
@@ -139,6 +191,13 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script src="ExpantaNum.js"></script>
+
+<script src="Save.js"></script> 
+        <script src="Main.js"></script>
+     <script src="V.js"></script>
 </body>
 
 </html>
@@ -212,6 +271,7 @@ color: #ffffff;
     order: 1;
 
 border: 3px solid #ffffff;
+text-align: center;
 }
 
 .mytabs .tab h2 {
@@ -225,13 +285,6 @@ border: 3px solid #ffffff;
   border-color: #ffffaa;
 }
 #demo0 {
-
-position: relative;
-
-    top: 18px;
-
-    right: -270px;
-
     width: 400px;
 
     height: 160px;
@@ -242,7 +295,8 @@ position: relative;
 
                      color: #ffffaa;
     text-align: center;
-
+margin: auto;
+margin-top: 50px;
 
     }
 
@@ -273,9 +327,6 @@ position: relative;
                           
                       }
                       .UPG {
-                            
-                            
-
                             width: 300px;
                     
                     height: auto;
@@ -290,38 +341,26 @@ position: relative;
                     
                                               }
                                               #mass0 {
-                                                position: relative;
-                                                top: 70px;
-                    
-                    right: 10px;
                     color: #aaaaff;
                     border-color: #aaaaff;
                     background-color: #000044 ;
                                               }
                                               #vel0 {
-                                                position: relative;
-                                                top: -110px;
-                    
-                    right: -317px;
                     color: #aaffaa;
                     border-color: #aaffaa;
                     background-color: #004400 ;
                                               }
                                               #pow0 {
-                                                position: relative;
-                                                top: -288px;
-                    
-                    right: -644px;
-                    
+                                              
                                               }
 
 #ke {
-
-    height: 1200px;
-
+    height: auto;
+padding-bottom: 30px;
     width: 960px;
     background-color: #111100;
     border-color: #ffffaa;
+    justify-content: center;
     }
     #statsTab {
       height: auto;
@@ -333,10 +372,9 @@ position: relative;
 
      #forceCounter {
        color: #ffcccc;
-       position: relative;
        font-size: 21px;
-       left: 380px;
-       top: -250px;
+       text-align: center;
+       margin-top: 30px;
      } 
      .force {
            padding-left: 5px;
@@ -347,18 +385,17 @@ position: relative;
                      color: #ffcccc;
      }
      #forceReset {
-position: relative;
     width: 500px;
     height: 160px;
-                     left: 225px;
-                     top: -250px;
     text-align: center;
+    margin: auto;
+    margin-top: 30px;
      }
      #forceUpgs {
        width: 930px;
        height: auto;
-       position: relative;
-       top: -200px;
+       margin: auto;
+       margin-top: 50px;
      }
           #forceInfo {
        width: 930px;
@@ -371,10 +408,26 @@ position: relative;
     justify-content: center;
     content
     flex-flow: row wrap;
-    width: 100vw;
      }
-     
-
+     #KEupgs {
+       width: 930px;
+       margin: auto;
+       margin-top: 30px;
+     }
+     .Heat {
+       border: 7px solid #ffbb77;
+       background-color: #442200;
+     }
+.myRange {
+  margin: 5px;
+  padding: 5px;
+  border: 5px solid #aa7744;
+  width: 300px;
+}
+.secret {
+  color: rgb(0,0,0,0);
+  text-shadow: 0px 0px 15px #888888;
+}
 </style>
 
 
