@@ -16,8 +16,8 @@
 </head>
 
 <body onload="loadGame()">
-  <p id="alert" style='color:white'> if everything disappeared not including this text and if buttons below are not working refresh your page to fix that hopefully</p>
-   <span v-if="E(fu.gainKE()).gte(1e100)" style="color: #990000; text-shadow: 0px 0px 12px #550000; font-weight: bolder">   (this is a place holder) SOFTCAPPED<span v-if="E(fu.gainKE()).gte(1e200)">+</span><span v-if="E(fu.gainKE()).gte(1e300)">^2</span>   </span> 
+  <p id="alert" style='color:white'> if everything disappeared not including this text and if buttons below are not working refresh your page to fix that hopefully if it still doesn't work click link below</p>
+  <a style="color: cyan" href="">link</a>
    
 <div id="app">
         
@@ -38,27 +38,27 @@
                      <h1 id="demo1">you have {{ format(E(player.KE).floor()) }} kinetic energy</h1>
                      <p>click this box to gain kinetic energy</p>
                  
-                     <p id="demo2">you get {{ format(fu.gainKE()) }} kinetic energy every click</p>
+                     <p id="demo2">you get {{ format(fu.gainKE()) }} <span v-if="E(fu.gainKE()).gte(1e40)" style="color: #990000; text-shadow: 0px 0px 12px #550000; font-weight: bolder">   SOFTCAPPED</span>   </span>  kinetic energy every click</p>
 
                             </div> <br>
                             <div class="labels" id="KEupgs">
-                            <div v-on:click="fu.mass()" v-if="E(player.KE).gte(10) || E(player.M).gte(1)" id="mass0" class="UPG">
+                            <div v-on:click="fu.mass(true)" v-if="E(player.KE).gte(10) || E(player.M).gte(1)" id="mass0" class="UPG">
                                 <p>mass multiplies KE gain by itself + 1</p>
-                                               <h1 class="count" id="mass1">you have {{ E(player.M).mul(player.SM1).mul(player.SM2).floor() }} mass</h1>
+                                               <h1 class="count" id="mass1">you have {{ E(player.M).add(E(fu.upgeffect5()).mul(10)).mul(fu.upgeffect55()).mul(player.SM1).mul(player.SM2).floor() }} mass</h1>
                                     <p v-if="player.FM >= 3">Currently: x{{ format(fu.mas()) }}</p>
                    <p id="mass2">Cost: {{ format(E(25).mul(E(fu.forceRatio(player.FM,"M")).pow(player.M)).div(fu.forceCheap(player.FP,"P")).floor()) }} KE</p>
            
                                                  </div>
-                             <div v-on:click="fu.vel()" v-if="E(player.KE).gte(100) || E(player.V).gte(1)" id="vel0" class="UPG">
+                             <div v-on:click="fu.vel(true)" v-if="E(player.KE).gte(100) || E(player.V).gte(1)" id="vel0" class="UPG">
                                 <p>velocity miltiplies KE gain by itself to the <span style="font-weight: bold">power + 2</span></p>
-                                               <h1 class="count" id="vel1">you have {{ E(player.V).mul(player.SV1).mul(player.SV2).floor() }} <span v-if="E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)">+ {{ E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).mul(player.SV1).mul(player.SV2).floor() }}</span>  velocity</h1>
+                                               <h1 class="count" id="vel1">you have {{ E(player.V).add(E(fu.upgeffect5()).mul(4)).mul(fu.upgeffect55()).mul(player.SV1).mul(player.SV2).floor() }} <span v-if="E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)">+ {{ E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).mul(player.SV1).mul(player.SV2).mul(fu.upgeffect55()).floor() }}</span>  velocity</h1>
                                   <p>Currently: x{{ format(fu.velocity()) }}</p>
                    <p id="vel2">Cost: {{ format(E(150).mul(E(fu.forceRatio(player.FV,"V")).pow(player.V)).div(fu.forceCheap(player.FM,"M")).floor()) }} KE</p>
            
                                                  </div>
-                                                   <div v-on:click="fu.pow()" v-if="E(player.KE).gte(25000) || E(player.P).gte(1)" id="pow0" class="UPG">
+                                                   <div v-on:click="fu.pow(true)" v-if="E(player.KE).gte(25000) || E(player.P).gte(1)" id="pow0" class="UPG">
                                                       <p>power's effect is the <span style="font-weight: bold">power</span> in velocity</p>
-                      <h1 class="count" id="pow1">you have {{ E(player.P).mul(player.SP1).mul(player.SP2).floor() }} power</h1>
+                      <h1 class="count" id="pow1">you have {{ E(player.P).add(fu.upgeffect5()).mul(1).mul(fu.upgeffect55()).mul(player.SP1).mul(player.SP2).floor() }} power</h1>
                           <p>Currently: ^{{ format(E(fu.power(false))) }} <span v-if="E(player.P).gte(5)" style="font-weight: bold">Softcapped</span></p>
                                     <p id="pow2">Cost: {{ format(E(35000).mul(E(fu.forceRatio(player.FP,"P")).pow(player.P)).div(fu.forceCheap(player.FV,"V")).floor()) }} KE</p>
                                                                                                 
@@ -67,7 +67,7 @@
 <h1 v-if="E(player.P).gte(1)" id="forceCounter">you have {{ format(E(player.F).floor()) }} force</h1>
 <div v-if="E(player.P).gte(1)" v-on:click="fu.forceGain()" id="forceReset" class="force">
   
-<p id="force1">you will get {{ format(E(player.KE).div(1e9).pow(0.5).mul(E(2).pow(E(player.HE).log10())).floor()) }} force</p>
+<p id="force1">you will get {{ format(E(fu.forceT()).floor()) }} force</p>
 <p id="force1,5">your force and KE adds {{ format(E(player.KE).log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor()) }} to velocity upgrades (if you force reseted at least once it will fix if you have at least 1 force)</p>
 <p id="force2">you need at least 1e9 KE to gain force (min 5 force recomended)</p>
 </div>
@@ -95,60 +95,82 @@
       <button v-on:click="sa.wipe()" id="wipe">wipe</button>
       <button v-on:click="sa.importy()" id="import">import</button>
       <button v-on:click="sa.exporty()" id="export">export download</button>
-      <h2 v-if="player.FM >= 4 || player.FV >= 4 || player.FP >= 4">autobuyer/cps test</h2>
-      <button v-on:click="fu.toggleAuto('M')" v-if="player.FM >= 4">toggle mass autobuyer</button>
-      <button v-on:click="fu.toggleAuto('V')" v-if="player.FV >= 4">toggle velocity autobuyer</button>
-      <button v-on:click="fu.toggleAuto('P')" v-if="player.FP >= 4">toggle power autobuyer</button>
-      <button v-on:click="fu.toggleAuto('KE')" v-if="player.FM >= 4">toggle kinetic energy autoclicker</button>
-      <button v-on:click="CPStest()" v-if="player.FM >= 4">cps test</button>
-      <button v-on:click="fu.interval()" v-if="player.FM >= 4">change autobuyer interval</button>
+      <h2 v-if="player.FM >= 4 || player.FV >= 4 || player.FP >= 4 || E(player.H).gt(1e7)">autobuyer/cps test</h2>
+      <button v-on:click="fu.toggleAuto('M')" v-if="player.FM >= 4 || E(player.H).gt(1e7)">toggle mass autobuyer</button>
+      <button v-on:click="fu.toggleAuto('V')" v-if="player.FV >= 4 || E(player.H).gt(1e7)">toggle velocity autobuyer</button>
+      <button v-on:click="fu.toggleAuto('P')" v-if="player.FP >= 4 || E(player.H).gt(1e7)">toggle power autobuyer</button>
+      <button v-on:click="fu.toggleAuto('KE')" v-if="player.FM >= 4 || E(player.H).gt(1e7)">toggle kinetic energy autoclicker</button>
+      <button v-on:click="CPStest()" v-if="player.FM >= 4 || E(player.H).gt(1e7)">cps test</button>
+      <button v-on:click="fu.interval()" v-if="player.FM >= 4  || E(player.H).gt(1e7)">change autobuyer interval</button>
+      
     </div>
 
     <div v-if="E(player.TABS).eq(3)" class="tab" style="background-color: #221100; border-color: #ffbb77; color: #ffbb77">
-    <h1 class="count">you have {{ format(E(player.H).floor()) }} Heat which generates {{ format(E(player.H).pow(1.2).floor()) }} Heat energy every second</h1>
-    <p>you have {{ format(E(player.HE).floor()) }} Heat energy which boosts force gain by x{{ format(E(2).pow(E(player.HE).log10())) }} and boosts KE gain by x{{ format(E(1.4).pow(E(player.HE).log10())) }}</p>
+    <h1 class="count">you have {{ format(E(player.H).floor()) }} Heat which generates {{ format(fu.gainHeatEnergy()) }} <span v-if="E(fu.gainHeatEnergy).gte(1e60)" class="SOFTCAP">SOFTCAPPED</span> Heat energy every second</h1>
+    <p>you have {{ format(E(player.HE).floor()) }} Heat energy which boosts force gain by x{{ format(E(2).pow(E(player.HE).log10()).pow(fu.upgeffect3())) }} and boosts KE gain by x{{ format(E(1.4).pow(E(player.HE).log10()).pow(fu.upgeffect3())) }}</p>
     <div v-on:click="fu.gainHeat()" class="Heat">
       <p>click here to gain Heat</p>
       <p>you have to get at least 1e10 force to make a Heat reset</p>
-      <p>you will get {{ format(E(player.F).div(1e10).pow(0.4).pow(fu.scaleBoost()).floor()) }} Heat afte the reset</p>
+      <p>you will get {{ format(E(fu.heatT()).floor()) }} <span v-if="E(fu.heatT()).gte(1e7)" class="SOFTCAP">   SOFTCAPPED<span v-if="E(fu.heatT()).gte(1e20)" class="SOFTCAP">+<span v-if="E(fu.heatT()).gte(1e150)" class="SOFTCAP">^2</span></span></span> Heat afte the reset</p>
     </div><br>
-      <div style="margin-bottom: 30px" v-if="E(player.H).gte(10000)" class="Heat labels">
-      <div class="myRange">
-        <p>double Heat energy gain</p>
-        <p>effect: {{  }}</p>
-        <p>Cost: {{ }}</p>
+    <div v-if="E(player.H).gte(10000)" class="Heat">
+      <h3>you have {{ format(E(fu.HElog()).sub(player.HEL)) }} <span v-if="E(player.THE).gte('1e70')"class="SOFTCAP">SOFTCAPPED</span>  upgrade tokens</h3>
+      <p>you get upgrade tokens based on power of magnitude of Heat Energy to the power of 0.8</p>
+      <p> upgrades below cost 1 upgrade token</p>
+      <div class="Heat" v-on:click="fu.HEUReset()">
+        <h2>Respec the upgrades</h2>
+        <h3>click here to respec the heat energy upgrades so you can potentially get better arragment and go further than ever but it will do a reset that resets everything that Heat reset resets</h3>
       </div>
-      <div class="myRange">
-        <p>raise Heat energy gain by ^0.01 (adding)</p>
-        <p>effect: {{  }}</p>
-        <p>Cost: {{ }}</p>
+      <div  class="marg labels">
+      <div v-on:click="fu.HEU1()" class="myRange">
+        <p>multiple heat energy gain by 5 </p>
+        <p>effect: x{{ format(fu.upgeffect1()) }}</p>
       </div>
-      <div class="myRange">
+      <div v-on:click="fu.HEU2()" class="myRange">
+        <p>raise Heat energy gain more</p>
+        <p>effect: ^{{ format(fu.upgeffect2()) }}</p>
+      </div>
+      <div v-on:click="fu.HEU3()" class="myRange">
         <p>raise Heat energy boost</p>
-        <p>effect: {{  }}</p>
-        <p>Cost: {{ }}</p>
+        <p>effect: ^{{ format(fu.upgeffect3()) }}</p>
       </div> 
     </div>
-    <span style="font-size: 30px; font-weight: bolder">Challenge Scales</span><br>
+    <div v-if="E(player.H).gt(1e5)">
+    <p>upgrades below cost 1 upgrade token more</p>
+    <div  class="labels marg">
+    <div v-on:click="fu.HEU4()" class="myRange">
+    <p>multiplie first 3 heat upgrades amount</p>
+    <p>effect: x{{ format(fu.upgeffect4()) }}</p>
+    </div>
+    <div v-on:click="fu.HEU5()" class="myRange">
+    <p>you start with more mass velocity and power and all of your mass, velocity and power get multiplied</p>
+    <p>effect: mass +{{ format(E(fu.upgeffect5()).mul(10)) }} velocity +{{ format(E(fu.upgeffect5()).mul(4)) }} power +{{ format(E(fu.upgeffect5())) }} boost x{{ format(fu.upgeffect55()) }}</p>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div v-if="E(player.H).gte(1)">
+    <span style=" font-weight: bolder">Challenge Scales</span><br>
+    <h3>you can change the scales without reseting the energy tab with Heat energy aka heat reset by not increasing the scale effect but decreasing it (you shouldn't change the "side" of the roulete while decreasing it because it might reset)</h3>
     <span style="font-size: 10px">it boosts Heat gain because the challenge is hell and hell is very hot and more Challenge is more hell</span><br><br>
     <span class="secret">but who knows what does the key value mean (not done yet)</span>
-    <div style=" margin-bottom: 30px" v-if="E(player.H).gte(1)" class="Heat labels" id="heatSliders">
+    <div class="Heat labels" id="heatSliders">
        <div class="myRange">
        <span>Mass to Velocity, scale 1</span><br>
-       <input type="range" min="1" max="201" value="100" id="heatSlider1" > <br>
+       <input type="range" min="1" max="201" value="101" id="heatSlider1" > <br>
        <span >Your Mass %{{ E(fu.heatSlider(1,1)).mul(100).floor() }}<br> Your Velocity %{{ E(fu.heatSlider(1,2)).mul(100).floor() }}</span> <br>
-       <span>requires 1000 Heat</span>
+       <span>requires 1,000 Heat</span>
        </div>
        <div class="myRange">
        <span>Velocity to Power, scale 2</span><br>
-       <input type="range" min="1" max="201" value="100" id="heatSlider2" > <br>
+       <input type="range" min="1" max="201" value="101" id="heatSlider2" > <br>
        <span >Your Velocity %{{ E(fu.heatSlider(2,1)).mul(100).floor() }} <br> Your Power %{{ E(fu.heatSlider(2,2)).mul(100).floor() }}</span> <br>
-       <span>requires 10000 Heat</span>
+       <span>requires 10,000 Heat</span>
        </div>
        <div class="myRange">
-       <span>Power to Mass, scale 3</span><br>
-       <input type="range" min="1" max="201" value="100" id="heatSlider3" > <br>
-       <span >Your Power %{{ E(fu.heatSlider(3,1)).mul(100).floor() }} <br> Your Mass %{{ E(fu.heatSlider(3,2)).mul(100).floor() }}</span> <br>
+       <span>???, scale 3</span><br>
+       <input type="range" min="1" max="201" value="101" id="heatSlider3" > <br>
+       <span >Your ??? %?? <br> Your ??? %?? </span> <br>
        <span>requires ? Heat</span>
        </div>
         <div v-on:click="fu.heatScales()" class="myRange">
@@ -156,12 +178,34 @@
         <span>click here to activate the scales</span> <br>
         <span>Mass %{{ E(player.SM1).mul(100).floor() }} Velocity %{{ E(player.SV1).mul(100).floor() }}</span> <br>
         <span>Velocity %{{ E(player.SV2).mul(100).floor() }} Power %{{ E(player.SP1).mul(100).floor() }}</span> <br>
-        <span>Power %{{ E(player.SM2).mul(100).floor() }} Mass %{{ E(player.SP2).mul(100).floor() }}</span>
+        <span>??? %?? ??? %??</span>
         </div>
     </div>
     <h1 class="count">your challenge scales will boost Heat gain by ^{{ fu.testScale() }} after scale activation</h1>
     <h1 class="count">your challenge scales boost Heat gain by ^{{ format(fu.scaleBoost()) }}</h1>
-
+    </div>
+   <div v-if="E(player.H).gte(100000)" class="scroll Heat" >
+   <div class="scitem myRange">
+     <br>
+     <h1 style="font-size: 22px" >at 100,000 Heat</h1>
+     <p>unlock 2 more heat upgrades and make Heat energy gain boost itself based on Heat energy</p>
+     <br>
+  </div>
+  <div class="scitem myRange">
+    <br>
+     <h1 style="font-size: 22px" >at 10,000,000 Heat</h1>
+     <p>your kinetic Energy autoclicker and all kinetic energy upgrade autobuyers don't reset on heat reset</p>
+     <br>
+  </div>
+  <div class="scitem myRange">
+   <h1 style="font-size: 22px" >at 1e15 Heat</h1>
+   <p>Kinetic Energy upgrades don't take kinetic energy while buying them</p>
+  </div>
+  <div class="scitem myRange"> 
+   <h1 style="font-size: 22px" >at 1e30 Heat</h1>
+   <p>unlock scale 3 and ??? (?? is just a number) (narazie nie ma żeby skończyć ten update)</p>
+  </div>
+   </div>
     </div>
 
     <div v-if="E(player.TABS).eq(4)" class="tab" id="statsTab">
@@ -417,6 +461,7 @@ padding-bottom: 30px;
      .Heat {
        border: 7px solid #ffbb77;
        background-color: #442200;
+       margin: 40px;
      }
 .myRange {
   margin: 5px;
@@ -427,6 +472,29 @@ padding-bottom: 30px;
 .secret {
   color: rgb(0,0,0,0);
   text-shadow: 0px 0px 15px #888888;
+}
+.scroll {
+  margin: auto;
+	width: 900px;
+	height: auto;
+	white-space: nowrap;
+	display: flex;
+  	flex-wrap: nowrap; 
+  	overflow: auto;
+}
+.scitem {
+	width: 220px;
+	flex: 0 0 auto;
+	white-space: normal;
+	padding: 20px;
+}
+.marg {
+  margin: 40px;
+}
+.SOFTCAP {
+  color: #990000;
+  font-weight: border;
+  text-shadow: 0px 0px 12px #550000;
 }
 </style>
 

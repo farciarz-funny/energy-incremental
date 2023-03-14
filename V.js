@@ -4,12 +4,11 @@ function loadVue() {
 	    el: "#app",
 	    data: {
 		   fu,
-		   player,
+		   checker,
+		   CPStest,
 		   E,
-		   sa,
-		   format,
-		   CPStest
+		   player,
+		   format
         }
 	})
-	
 }

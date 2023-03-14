@@ -2,8 +2,8 @@ var player = JSON.parse(localStorage.getItem("Save") || "{}")
 // 1 = shoving quantity 2 = shoving per click or price
   function E(x){return new ExpantaNum(x)};
 function checker() {
-  var sug = ["KE","M","V","P","F","TABS","FM","FV","FP","MA","VA","PA","KEA","C","CPS","CPST","Int","H","HE","SM1","SM2","SV1","SV2","SP1","SP2","S1","S2","S3"]
-  var values = ["0","0","0","0","0","1",0,0,0,true,true,true,true,0,0,false,1000,"0","0","1","1","1","1","1","1","0","0","0"]
+  var sug = ["KE","M","V","P","F","TABS","FM","FV","FP","MA","VA","PA","KEA","C","CPS","CPST","Int","H","HE","SM1","SM2","SV1","SV2","SP1","SP2","S1","S2","S3","HEU1","HEU2","HEU3","HEU4","HEU5","HEL","THE"]
+  var values = ["0","0","0","0","0","1",0,0,0,true,true,true,true,0,0,false,1000,"0","0","1","1","1","1","1","1","100","100","100","0","0","0","0","0","0","0","0","0"]
 	var amo = JSON.parse(localStorage.getItem("Save"))
 	var me = {}
 	console.log(amo[sug[0]], me, amo)
@@ -11,21 +11,126 @@ function checker() {
 	me[sug[i]] = amo[sug[i]] || values[i]
 	localStorage.setItem("Save", JSON.stringify(me))
 	}
-  console.log(amo[sug[0]], me, amo)
+  console.log(amo[sug[0]], me, amo, sug.length , values.length)
 }
   async function CPStest() {
-    if(window.confirm("are you ready? you have to click kinetic energy gain button as fast as possible to get the highest amount of cps (if you done worse than before youc cps won't change) after you confirm you have 5 seconds to get ready (you should get clocking as fast as possible after confirmation) and you will get informed when it ends")) {
+    if(window.confirm("are you ready? you have to click kinetic energy gain button as fast as possible for 15 seconds to get the highest amount of cps (if you done worse than before youc cps won't change) after you confirm you have 5 seconds to get ready (you should get clicking as fast as possible after confirmation) and you will get informed when it ends")) {
       player.CPST = true
       localStorage.setItem("Save", JSON.stringify(player))
-      await fu.sleep(60000)
+      await fu.sleep(15000)
       player.CPST = false
-      if(player.CPS < player.C / 60) player.CPS = player.C / 60
+      if(player.CPS < player.C / 15) player.CPS = player.C / 15
       player.C = 0
       localStorage.setItem("Save", JSON.stringify(player))
       alert("you can stop your cps is " + player.CPS)
     }
   }
 var fu = {
+  HEUReset(){
+    player.HEU1 = "0"
+    player.HEU2 = "0"
+    player.HEU3 = "0"
+    player.HEU4 = "0"
+    player.HEU5 = "0"
+    player.HEL = "0"
+    fu.heatReset(player)
+  },
+  HElog(){
+    var gain = E(player.THE).log10().pow(0.8)
+    if(gain.gte(30)) gain = gain.pow(0.8).add(15)
+    return gain.toString()
+  },
+  fix() {
+    checker()
+    close()
+  },
+  gainHeatEnergy() {
+    var he = E(player.HE)
+    if(player.HE == "NaN") {he = E(10)}
+    if(E(player.HE).lte(10)) {he = E(10)}
+    var h = E(player.H)
+    var gain = h.pow(1.2)
+    if(E(player.HEU1).gte(1)) gain = gain.mul(fu.upgeffect1())
+    if(E(player.HEU2).gte(1)) gain = gain.pow(fu.upgeffect2())
+    var helog = he.log10().toString()
+    if(E(player.H).gt("1e5")) gain = gain.mul(E(1.5).pow(helog))
+    if(gain.gt("1e60")) gain = gain.div(E(1.2).pow(gain.log10())).add("1e60")
+    return gain.toString()
+  },
+  upgeffect55() {
+  var effect = E(player.HEU5).mul(5)
+  effect = effect.pow(0.5).div(10).add(1)
+  return effect.toString()
+  },
+  upgeffect5() {
+  var effect = E(player.HEU5)
+  return effect.toString()
+  },
+  upgeffect4() {
+  var effect = E(player.HEU4).mul(400).pow(0.5).div(100).add(1)
+  return effect.toString()
+  },
+  upgeffect3() {
+    var effect = E(player.HEU3).mul(100)
+    if(E(player.HEU4).gte(1)) effect = effect.mul(fu.upgeffect4())
+    effect = effect = effect.pow(0.5).div(100).add(1)
+    return effect.toString()
+  },
+  upgeffect2() {
+    var effect = E(0)
+    effect = E(player.HEU2).mul(25).pow(0.55).div(100).add(1)
+    if(E(player.HEU4).gte(1)) effect = effect.mul(fu.upgeffect4())
+    return effect.toString()
+  },
+  upgeffect1() {
+    var effect = E(5).pow(player.HEU1)
+    if(E(player.HEU4).gte(1)) effect = effect.mul(fu.upgeffect4())
+    return effect.toString()
+  },
+  HEU5() {
+    var log = E(fu.HElog()).sub(2)
+    if(log.gte(player.HEL)) {
+      player.HEU5 = E(player.HEU5).add(1).toString()
+    player.HEL =E(player.HEL).add(2).toString()
+      
+    } 
+    localStorage.setItem("Save", JSON.stringify(player))
+  },
+  HEU4() {
+  var log = E(fu.HElog()).sub(2)
+    if(log.gte(player.HEL)) {
+      player.HEU4 = E(player.HEU4).add(1).toString()
+      player.HEL =E(player.HEL).add(2).toString()
+      
+    } 
+    localStorage.setItem("Save", JSON.stringify(player))
+  },
+  HEU3() {
+    var log = E(fu.HElog()).sub(1)
+    if(log.gte(player.HEL)) {
+      player.HEU3 = E(player.HEU3).add(1).toString()
+      player.HEL =E(player.HEL).add(1).toString()
+      
+    } 
+    localStorage.setItem("Save", JSON.stringify(player))
+  },
+  HEU2() {
+    var log = E(fu.HElog()).sub(1)
+    if(log.gte(player.HEL)) {
+      player.HEU2 = E(player.HEU2).add(1).toString()
+     player.HEL = E(player.HEL).add(1).toString()
+    }
+    localStorage.setItem("Save", JSON.stringify(player))
+  },
+  HEU1() {
+    var log = E(fu.HElog()).sub(1)
+    if(log.gte(player.HEL)) {
+      player.HEU1 = E(player.HEU1).add(1).toString()
+   player.HEL = E(player.HEL).add(1).toString()
+      
+    } 
+    localStorage.setItem("Save", JSON.stringify(player))
+  },
   testScale() {
     var element1 = document.getElementById("heatSlider1")
     if(!document.body.contains(element1)) {element1 = {value:101}}
@@ -39,10 +144,13 @@ var fu = {
     return JSON.stringify([boost.toString(),slider1,slider2])
   },
   scaleBoost() {
-    
+  var S1 = E(0)
+  if(player.S1 == "100") S1 = E(2.5)
+  var S2 = E(0)
+  if(player.S2 == "100") S2 = E(1)
   var boost = E(0)
-  boost = boost.add(E(7).pow(E(player.S1).sub(101).abs().pow(0.5).div(10).sub(0.1)))
-  boost = boost.mul(E(2).pow(E(player.S2).sub(101).abs().pow(0.5).div(10).sub(0.1)))
+  boost = boost.add(E(7).pow(E(player.S1).sub(101).abs().pow(0.5).div(10)).add(S1))
+  boost = boost.mul(E(2).pow(E(player.S2).sub(101).abs().pow(0.5).div(10)).add(S2))
   return boost.toString()
   },
   heatTest() {
@@ -66,6 +174,7 @@ var fu = {
   },
   mas() {
     let mas = E(player.M).add(1)
+    if(E(player.HEU5).gte(1)) mas = mas.add(E(fu.upgeffect5()).mul(10)).mul(fu.upgeffect55())
     if(!E(player.SM1).eq(1)) mas = mas.mul(player.SM1)
     if(!E(player.SM2).eq(1)) mas = mas.mul(player.SM2)
     if(player.FM >= 3) mas = mas.pow(E(player.M).div(1000).add(1))
@@ -73,20 +182,29 @@ var fu = {
   },
   heatScales() {
     var element1 = document.getElementById("heatSlider1")
-    if(!document.body.contains(element1)) {element1 = {value:100}}
+    if(!document.body.contains(element1)) {element1 = {value:101}}
     var slider1 = element1.value
     var element2 = document.getElementById("heatSlider2")
-    if(!document.body.contains(element2)) {element2 = {value:100}}
+    if(!document.body.contains(element2)) {element2 = {value:101}}
     var slider2 = element2.value
-    if(window.confirm("before you adjust your scales ( aka make the scales actually work ) make sure you have the required heat to get the benefits ( and the not benefits ) because everything in energy tab will be reset and your heat energy will be reset now do you actually want to adjust the scales?")) {
+    var element3 = document.getElementById("heatSlider3")
+    if(!document.body.contains(element3)) {element3 = {value:101}}
+    var slider3 = element3.value
+    if(window.confirm("before you adjust your scales ( aka make the scales actually work ) make sure you have the required heat to get the benefits ( and the not benefits ) because everything in energy tab will be reset and your heat energy will be reset ( if the scale is tilted less than before then it doesn't reset ) now do you actually want to adjust the scales?")) {
     if(E(player.H).gte(1000)) {
       player.SM1 = fu.heatSlider(1,1)
       player.SV1 = fu.heatSlider(1,2)
+      if(!(E(player.S1).sub(101).abs().gte(E(slider1).sub(101).abs()))){
+        fu.heatReset(player)
+      } 
       player.S1 = `${slider1}`
     }
     if(E(player.H).gte(10000)) {
       player.SV2 = fu.heatSlider(2,1)
       player.SP1 = fu.heatSlider(2,2)
+      if(!(E(player.S2).sub(101).abs().gte(E(slider2).sub(101).abs()))) {
+        fu.heatReset(player)
+      }
       player.S2 = `${slider2}`
     }
     localStorage.setItem("Save", JSON.stringify(player))
@@ -196,7 +314,7 @@ var fu = {
     }
   },
   heatReset(x) {
-    x.KE = "0"
+    x.KE = "1"
     x.M = "0"
     x.V = "0"
     x.P = "0" 
@@ -204,18 +322,26 @@ var fu = {
     x.FM = 0
     x.FV = 0
     x.FP = 0
-    x.HE = "0"
+    x.HE = "1"
     return x
+  },
+  heatT() {
+    var f = E(player.F)
+    var h = E(player.H)
+    var gain = f.div(1e10).pow(0.4).pow(fu.scaleBoost())
+    if(gain.gt(1e7)) gain = gain.div(E(2).pow(gain.log10())).add(1e7)
+    if(gain.gt(1e20)) gain = gain.div(E(5.4).pow(gain.log10())).add(1e20)
+    if(gain.gt(1e150)) gain = gain.div(E(4).pow(gain.log10())).add(1e150)
+    return gain.toString()
   },
   gainHeat() {
     var f = E(player.F)
-    var h = E(player.H)
     if(window.confirm("Do you really want to reset everything in Energy tab and Heat energy to gain Heat?")) {
       if(f.gte(1e10)) {
-      player.H = h.add(f.div(1e10).pow(0.4).pow(fu.scaleBoost())).toString()
+      player.H = E(player.H).add(fu.heatT()).toString()
       fu.heatReset(player)
       localStorage.setItem("Save", JSON.stringify(player))
-      }
+    }
     }
   },
   interval() {
@@ -255,37 +381,46 @@ var fu = {
   },
   ticks(){
     var KE = player.KEA
+    var HE = player.HE
+    if(player.HE == "NaN") {HE = E(10)}
+    if(E(player.HE).lte(10)) {HE = E(10)}
     var M = player.MA
     var V = player.VA
     var P = player.PA
     var CPS = 2.5
     var Inn = E(1000).div(E(player.Int))
     if(player.CPS > CPS) CPS = player.CPS
-    if(KE && player.FM >= 4){
+    if(KE && player.FM >= 4 || E(player.H).gt(1e7)){
       var k = E(player.KE)
       if(player.KE == "NaN") {k = E(10)}
       if(E(player.KE).lt(10)) {k = E(10)}
 player.KE = E(k).add(E(fu.gainKE()).mul(E(CPS)).div(Inn)).toString()
 localStorage.setItem("Save", JSON.stringify(player))
     } 
-    if(P && player.FP >= 4) {
-      fu.pow()
+    if(P && player.FP >= 4 || E(player.H).gt(1e7)) {
+      fu.pow(false)
     } 
-    if(V && player.FV >= 4) {
-      fu.vel()
+    if(V && player.FV >= 4 || E(player.H).gt(1e7)) {
+      fu.vel(false)
     }
-    if(M && player.FM >= 4) {
-      fu.mass()
+    if(M && player.FM >= 4 || E(player.H).gt(1e7)) {
+      fu.mass(false)
   }
-  if(E(player.H).gte(1)) player.HE = E(player.HE).add(E(player.H).pow(1.2).div(Inn)).toString()
+  if(E(player.H).gte(1)) {
+    player.HE = E(HE).add(E(fu.gainHeatEnergy()).div(Inn)).toString()
+    player.THE = E(player.THE).add(E(fu.gainHeatEnergy()).div(Inn)).toString()
+  }
+  if(player.HE == "NaN") {console.log("broken")}
   localStorage.setItem("Save", JSON.stringify(player))
   },
   velocity(){
     var k = E(player.KE)
     if(player.KE == "NaN") {k = E(10)}
+    if(k.lte(10)) {k = E(10)}
     var fvel = E(1)
     let vel = E(player.V).add(1)
     if(k.log10().pow(0.5).mul(E(player.F).add(1).log(5)).gte(1)) vel = vel.add(k.log10().pow(0.5).mul(E(player.F).add(1).log(5)).add(1).floor())
+    if(E(player.HEU5).eq(1)) vel = vel.add(E(fu.upgeffect5()).mul(4)).mul(fu.upgeffect55())
     if(!E(player.SV1).eq(1)) vel = vel.mul(player.SV1)
     if(!E(player.SV2).eq(1)) vel = vel.mul(player.SV2)
     if(player.FV >= 3) fvel = vel.div(2000).add(1)
@@ -485,6 +620,7 @@ localStorage.setItem("Save", JSON.stringify(player))
     var p = E(0)
     if(x) p = E(2)
     var pp = E(player.P)
+    if(E(player.HEU4).eq(1)) pp = pp.add(E(fu.upgeffect5())).mul(fu.upgeffect55())
     if(!E(player.SP1).eq(1)) pp = pp.mul(player.SP1)
     if(!E(player.SP2).eq(1)) pp = pp.mul(player.SP2)
     if(E(player.P).gte(1)) p = p.add(E(pp).pow(0.75))
@@ -507,7 +643,8 @@ localStorage.setItem("Save", JSON.stringify(player))
     let gain = E(1)
     gain = gain.mul(fu.mas())
     gain = gain.mul(fu.velocity())
-    if(E(player.H).gte(1)) gain = gain.mul(format(E(1.4).pow(E(player.HE).log10())))
+    if(E(player.H).gte(1)) gain = gain.mul(E(1.4).pow(E(player.HE).log10()).pow(fu.upgeffect3()))
+    if(E(player.KE).gt("1e40")) gain = gain.div(E(4).pow(gain.log10())).add("1e40")
     return gain.toString()
   },
   te() {
@@ -517,7 +654,7 @@ player.KE = E(k).add(fu.gainKE()).toString()
 if(player.CPST) player.C = player.C + 1
 localStorage.setItem("Save", JSON.stringify(player))
 },
-mass() {
+mass(x) {
   var k = E(player.KE)
   var masslvl = E(player.M)
   var ratio = fu.forceRatio(player.FM,"M")
@@ -525,13 +662,16 @@ mass() {
   canbuy = ExpantaNum.affordGeometricSeries(k.mul(cheap),25,ratio,masslvl)
   masscost = ExpantaNum.sumGeometricSeries(canbuy,25,ratio,masslvl)
   var massformula = k.sub(masscost).floor()
+  
   if(canbuy.gt(0)) {
   player.M = masslvl.add(canbuy).toString();
+  if(E(player.H).gt(1e15)) {} else {
   player.KE = k.sub(masscost.div(cheap)).toString();
+  }
   localStorage.setItem("Save", JSON.stringify(player))
   }
 },
-vel() {
+vel(x) {
   var velocitylvl = E(player.V)
   var k = E(player.KE)
   var ratio = fu.forceRatio(player.FV,"V")
@@ -539,13 +679,15 @@ vel() {
  var buyV = ExpantaNum.affordGeometricSeries(k.mul(cheap),150,ratio,velocitylvl)
  var costV = ExpantaNum.sumGeometricSeries(buyV,150,ratio,velocitylvl)
   var massformula = k.sub(costV).floor()
- if(buyV.gt(0)){
+  if(buyV.gt(0)){
  player.V = velocitylvl.add(buyV).toString()
+ if(E(player.H).gt(1e15)) {} else {
  player.KE = k.sub(costV.div(cheap)).toString()
+ }
   localStorage.setItem("Save", JSON.stringify(player))
  }
 },
-pow(){
+pow(x){
     var powerlvl = E(player.P)
   var k = E(player.KE)
   var ratio = fu.forceRatio(player.FP,"P")
@@ -553,20 +695,27 @@ pow(){
  var buyP = ExpantaNum.affordGeometricSeries(k.mul(cheap),35000,ratio,powerlvl)
  var costP = ExpantaNum.sumGeometricSeries(buyP,35000,ratio,powerlvl)
   var massformula = k.sub(costP).floor()
- if(buyP.gt(0)){
+  if(buyP.gt(0)){
  player.P = powerlvl.add(buyP).toString()
+ if(E(player.H).gt(1e15)) {} else {
  player.KE = k.sub(costP.div(cheap)).toString()
+ }
   localStorage.setItem("Save", JSON.stringify(player))
  }
 },
-forceGain(){
+forceT() {
   var k = E(player.KE)
   var f = E(player.F)
+  var fgain = k.div(1e9).pow(0.5)
+  if(E(player.H).gte(1)) fgain = fgain.mul(E(2).pow((E(player.HE)).log10()).pow(fu.upgeffect3()))
+  return fgain.toString()
+},
+forceGain(){
+  var f = E(player.F)
+  var k = E(player.KE)
   if (window.confirm("Do you really want to reset all your KE and KE upgrades to gain force?")) {
   if(k.gte(1e9)) {
-    var fgain = k.div(1e9).pow(0.5)
-    if(E(player.H).gte(1)) fgain = fgain.mul(E(2).pow((E(player.HE)).log10()))
-  player.F = f.add(fgain).toString()
+  player.F = f.add(fu.forceT()).toString()
   fu.forceReset(player)
   localStorage.setItem("Save", JSON.stringify(player))
 }
@@ -652,3 +801,4 @@ function sett(x,y) {
   player[x] = y
   localStorage.setItem("Save", JSON.stringify(player))
 }
+console.log()
