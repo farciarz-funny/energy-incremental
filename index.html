@@ -92,9 +92,9 @@
     <div v-if="E(player.TABS).eq(2)" class="tab">
 
       <h2>Saving settings</h2>
-      <button v-on:click="sa.wipe()" id="wipe">wipe</button>
-      <button v-on:click="sa.importy()" id="import">import</button>
-      <button v-on:click="sa.exporty()" id="export">export download</button>
+      <button v-on:click="fu.wipe()" id="wipe">wipe</button>
+      <button v-on:click="fu.importy()" id="import">import</button>
+      <button v-on:click="fu.exporty()" id="export">export download</button>
       <h2 v-if="player.FM >= 4 || player.FV >= 4 || player.FP >= 4 || E(player.H).gt(1e7)">autobuyer/cps test</h2>
       <button v-on:click="fu.toggleAuto('M')" v-if="player.FM >= 4 || E(player.H).gt(1e7)">toggle mass autobuyer</button>
       <button v-on:click="fu.toggleAuto('V')" v-if="player.FV >= 4 || E(player.H).gt(1e7)">toggle velocity autobuyer</button>
