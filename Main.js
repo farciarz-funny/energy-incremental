@@ -526,7 +526,7 @@ localStorage.setItem("Save", JSON.stringify(player))
       return E(500).toString()
       break;
       case 1:
-      return E(25000).toString()
+      return E(10000).toString()
       break;
       case 2:
       return E(500000).toString()
