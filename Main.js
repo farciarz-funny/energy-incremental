@@ -3,7 +3,7 @@ var player = JSON.parse(localStorage.getItem("Save") || "{}")
   function E(x){return new ExpantaNum(x)};
 function checker() {
   var sug = ["KE","M","V","P","F","TABS","FM","FV","FP","MA","VA","PA","KEA","C","CPS","CPST","Int","H","HE","SM1","SM2","SV1","SV2","SP1","SP2","S1","S2","S3","HEU1","HEU2","HEU3","HEU4","HEU5","HEL","THE"]
-  var values = ["0","0","0","0","0","1",0,0,0,true,true,true,true,0,0,false,1000,"0","0","1","1","1","1","1","1","100","100","100","0","0","0","0","0","0","0","0","0"]
+  var values = ["0","0","0","0","0","1",0,0,0,true,true,true,true,0,0,false,1000,"0","0","1","1","1","1","1","1","101","101","101","0","0","0","0","0","0","0","0","0"]
 	var amo = JSON.parse(localStorage.getItem("Save"))
 	var me = {}
 	console.log(amo[sug[0]], me, amo)
