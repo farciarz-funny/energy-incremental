@@ -42,7 +42,7 @@ var fu = {
   },
   fix() {
     checker()
-    close()
+    window.location.assign(window. location. href.replace("fix.html",""));
   },
   gainHeatEnergy() {
     var he = E(player.HE)
