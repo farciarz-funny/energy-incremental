@@ -42,7 +42,7 @@ var fu = {
   },
   fix() {
     checker()
-    window.location.assign("https://farciarz-funny.github.io/fix.html");
+window.location.assign("https://farciarz-funny.github.io/");
   },
   gainHeatEnergy() {
     var he = E(player.HE)
