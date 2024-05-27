@@ -8,7 +8,8 @@ function loadVue() {
 		   CPStest,
 		   E,
 		   player,
-		   format
+		   format,
+		   Time
         }
 	})
 }
